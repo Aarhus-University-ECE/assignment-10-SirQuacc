@@ -47,19 +47,10 @@ typedef int (*fn_int_to_int)(int);
 
 node *map(node *p, fn_int_to_int f) { 
   // Add your code for excercise 3
-  node* curNew = NULL; //Pointer that goes through the creation of a new list
-  node* head = NULL; //Pointer to save the head of that new list
-  if(p != NULL){ //Assuming we're not receiving an empty list, create first node and update head.
-    curNew = make_node(f(p->value), NULL);
-    head = curNew;
-    p = p->next; //Scroll onwards in given list
+  if(p != NULL){ //If not at the end, return a node with the applied function's value and next node being recursive.
+    return make_node(f(p->value), map(p->next, f));
   }
-  while(p != NULL){ //Until we reach the end of the list, create new nodes applying the given function and add them to the new list
-    curNew->next = make_node(f(p->value), NULL);
-    curNew = curNew->next;
-    p=p->next;
-  }
-  return head; //Return pointer to the head of the new list.
+  return NULL; //Terminate the list, when the end is reached.
 }
 
 int square(int x) { return x * x; }
