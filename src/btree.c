@@ -1,5 +1,4 @@
 #include "btree.h"
-
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -35,10 +34,11 @@ struct tree_node *Insert(int x, struct tree_node *t) {
 
 struct tree_node *Remove(int x, struct tree_node *t) {
   // Remove one item from the tree t
-  tree_node* copy = t;
-  tree_node** tPoint = &t;
-  tree_node* deletDis;
-  tree_node** prevPoint;
+
+  tree_node* copy = t; //Variable to scroll through tree
+  tree_node** tPoint = &t; //Pointer that points to the pointer that points to t
+  tree_node* deletDis; //Variable to save a pointer to the node we want to remove later
+  tree_node** prevPoint; //Variable to scroll through when looking for a replacement for a deleted 
   while(!Empty(t)){
     if(x == copy->item){ //We are at the node we want to remove
       deletDis = copy; //Copy current node's pointer, to free up later
@@ -62,24 +62,19 @@ struct tree_node *Remove(int x, struct tree_node *t) {
         if(copy->left != NULL){ //If this largest number has a left child, we need to remove this largest node, but reassign the pointer to it, to whatever it's left child was.
           *prevPoint = copy->left;
         }
-
         *tPoint = copy; //Now, the pointer to whatever we wanted to remove, needs to instead point to this largest node, t
-        
-        if(copy->left != NULL){ //Might be unnecessary to have if/else
-          copy->right = deletDis->right;
-          copy->left = deletDis->left;
-        } else{
-          copy->right = deletDis->right;
-        }
-       
+        copy->right = deletDis->right; //Reassign the newly moved node's pointers, to fit its new place in the tree
+        copy->left = deletDis->left;
       }
       free(deletDis);
       break;
     }
-    if(x < copy->item){
+    if(x < copy->item){ //If what we're looking for is lower than current item, go left
+      if(copy->left == NULL) break; //If the item doesn't exist in the tree, break to return the tree
       copy = copy->left;
       tPoint = &((*tPoint)->left);
-    } else {
+    } else { //Otherwise go right
+      if(copy->right == NULL) break; //If the item doesn't exist in the tree, break to return the tree
       copy = copy->right;
       tPoint = &((*tPoint)->right);
     }
