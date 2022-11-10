@@ -85,10 +85,10 @@ struct tree_node *Remove(int x, struct tree_node *t) {
 
 bool Contains(int x, struct tree_node *t) {
   // Return true if the tree t contains item x. Return false otherwise.
+  if(t == NULL) return false;
   if(x == t->item) return true;
-  if(x < t->item && t->left != NULL) return Contains(x, t->left);
-  if(x > t->item && t->right != NULL) return Contains(x, t->right);
-  return false; //Base case
+  if(x < t->item) return Contains(x, t->left);
+  else return Contains(x, t->right);
 }
 
 struct tree_node *Initialize(struct tree_node *t) {
