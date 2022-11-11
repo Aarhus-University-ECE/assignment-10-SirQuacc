@@ -75,50 +75,22 @@ Below is the recursive function, it can also be found in linked\_list.c
 
 \section{}
 \includegraphics[width=\linewidth, keepaspectratio=true]{task3} 
-The code is seen below and can be found in search.c
+The code for this is seen below, and can be found in linked\_list.c
 \begin{lstlisting}
-    bool search(int a[], int n, int x)
-    {
-        assert(!(n < 0)); // Can't search an array of lower than 0 length
-        if(n == 0){ //Base case, if we're beyond the array, element x wasn't in there,
-            return false;
-        }
-        if(x == a[n-1]){ //Recusively check with linear search if x is equal to any element in the array of length n.
-            return true;
-        } else return search(a, n-1, x);
+  typedef int (*fn_int_to_int)(int);
+  node *map(node *p, fn_int_to_int f) { 
+    if(p != NULL){ //If not at the end, return a node with the applied function's value and next node being recursive.
+      return make_node(f(p->value), map(p->next, f));
     }
+    return NULL; //Terminate the list, when the end is reached.
+  }
 \end{lstlisting}
-\vspace{1cm}
 
-\pagebreak
+
 \section{}
 \includegraphics[width=\linewidth, keepaspectratio=true]{task4}
-Below is my code for this function, it can also be found in dfs.c
-\begin{lstlisting}
-    void DFT (node * root)
-    {
-      printf("The given tree:\n");
-      print_tree(root, 0); //Print the given tree first
-    
-      stack* mainStack = malloc(sizeof(stack)); //Allocate a stack node
-      initStack(mainStack); //Initialize the stack
-      mainStack = push(mainStack, root); //Push the root on to the stack first
-      stack* popped; //Pointer to the saved node after popping
-    
-      printf("Order of visiting tree: ");
-      while(!isEmpty(mainStack)){ //!isEmpty(mainStack)
-        popped = pop(&mainStack); //Pop the top node, popped variable saves pointer to the popped node
-        print_node(popped->node); //Print the visited (popped) node's value.
-        if(popped->node->rchild != NULL) mainStack = push(mainStack, popped->node->rchild); //If there is a right child, add this to the stack
-        if(popped->node->lchild != NULL) mainStack = push(mainStack, popped->node->lchild); //If there is a left child, add this to the stack
-        free(popped); // Free stack-node, clean-up.
-      }
-      printf("\n");
-    }
-\end{lstlisting}
-
-
-\vspace{2pt}
-
-
+\vspace{5pt}\\
+The solutions to this exercise are found in btree.c, and the testing of the program is done via CMake and tests.cpp\\
+Also, the solutions are made assuming that ALL nodes on the left of a parent, are smaller than or equal to that parent.\\
+Similarly on the right, ALL nodes to the right, also children of children, are larger than the parent.
 \end{document}

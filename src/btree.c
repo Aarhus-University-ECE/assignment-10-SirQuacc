@@ -38,8 +38,8 @@ struct tree_node *Remove(int x, struct tree_node *t) {
   tree_node* copy = t; //Variable to scroll through tree
   tree_node** tPoint = &t; //Pointer that points to the pointer that points to t
   tree_node* deletDis; //Variable to save a pointer to the node we want to remove later
-  tree_node** prevPoint; //Variable to scroll through when looking for a replacement for a deleted 
-  while(!Empty(t)){
+  tree_node** prevPoint; //Variable to scroll through when looking for a replacement for a deleted node
+  while(!Empty(t)){ //Run until a leaf has been passed (or empty list), or we break the loop
     if(x == copy->item){ //We are at the node we want to remove
       deletDis = copy; //Copy current node's pointer, to free up later
       if(copy->left == NULL){ //If our node doesn't have any left child, we set the pointer to t, to point to t's right child instead.
